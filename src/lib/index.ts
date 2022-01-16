@@ -1,4 +1,4 @@
-import Tess from 'svelte-tesseract';
+import * as Tess from 'svelte-tesseract';
 import { derived, writable, Writable, Readable } from 'svelte/store';
 
 export const initialize = async () => {
