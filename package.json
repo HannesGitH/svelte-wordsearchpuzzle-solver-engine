@@ -30,6 +30,7 @@
   "type": "module",
   "dependencies": {
     "svelte-tesseract": "file:../svelte-tesseract/package",
-    "svelte2tsx": "^0.4.14"
+    "svelte2tsx": "^0.4.14",
+    "tesseract.js": "^2.1.5"
   }
 }
