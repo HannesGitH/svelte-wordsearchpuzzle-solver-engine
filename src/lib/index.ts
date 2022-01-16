@@ -5,6 +5,9 @@ export const initialize = async () => {
 	await Tess.initialize();
 };
 
+/// the image to run recognition on
+export const image = Tess.image;
+
 /// what step of the recognition are we currently in
 export const status = Tess.status;
 /// how far has this step progressed
