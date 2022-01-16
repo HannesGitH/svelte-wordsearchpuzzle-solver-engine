@@ -47,16 +47,14 @@ const _findWords = derived([symbolMap, chosenLanguage], ([$map, $lang]) => {
 	});
 });
 
-const _checkSymbols = (currentSymbols: Tesseract.Symbol[], lang: string) => {
+const _checkSymbols = async (currentSymbols: Tesseract.Symbol[], lang: string) => {
 	const wordstring = currentSymbols.map((sym) => sym.text).reduce((acc, val) => acc + val, '');
 	const api_url = `https://api.dictionaryapi.dev/api/v2/entries/${lang}/${wordstring}`;
-	fetch(api_url).then((res) => {
-		if (res.status != 200) return;
-		res.json().then((j) => {
-			j.symbols = currentSymbols;
-			_foundWords.update((words) => words.add(j as Word));
-		});
-	});
+	const res = await fetch(api_url)
+	if (res.status != 200) return;
+	let json = await res.json();
+	json.symbols = currentSymbols;
+	_foundWords.update((words) => words.add(json as Word));
 };
 
 interface Language {
