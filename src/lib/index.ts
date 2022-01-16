@@ -41,16 +41,27 @@ const _findWords = derived([symbolMap, chosenLanguage], ([$map, $lang]) => {
 	$map.forEach((row, x) => {
 		row.forEach((symStart, y1) => {
 			row.slice(y1 + 1).forEach((symEnd, y2) => {
-				_checkSymbols(row.slice(y1, y2),$lang.id);
+				_checkSymbols(row.slice(y1, y2), $lang.id);
 			});
 		});
 	});
+
+	//check columns
+	for (let y = 0; y < $map[0].length; y++) {
+		for (let x1 = 0; x1 < $map.length - 1; x1++) {
+			let currentSymbols: Tesseract.Symbol[] = [$map[x1][y], $map[x1 + 1][y]]; // at least to symbols
+			for (let x2 = x1 + 1; x2 < $map.length; x2++) {
+                currentSymbols.push($map[x2][y]);
+				_checkSymbols(currentSymbols, $lang.id);
+			}
+		}
+	}
 });
 
 const _checkSymbols = async (currentSymbols: Tesseract.Symbol[], lang: string) => {
 	const wordstring = currentSymbols.map((sym) => sym.text).reduce((acc, val) => acc + val, '');
 	const api_url = `https://api.dictionaryapi.dev/api/v2/entries/${lang}/${wordstring}`;
-	const res = await fetch(api_url)
+	const res = await fetch(api_url);
 	if (res.status != 200) return;
 	let json = await res.json();
 	json.symbols = currentSymbols;
