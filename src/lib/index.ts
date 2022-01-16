@@ -56,6 +56,9 @@ const _findWords = derived([symbolMap, chosenLanguage], ([$map, $lang]) => {
 			}
 		}
 	}
+
+    //TODO: check diagonals
+
 });
 
 const _checkSymbols = async (currentSymbols: Tesseract.Symbol[], lang: string) => {
