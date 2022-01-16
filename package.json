@@ -29,7 +29,7 @@
   },
   "type": "module",
   "dependencies": {
-    "svelte-tesseract": "^0.0.8",
+    "svelte-tesseract": "file:../svelte-tesseract/package",
     "svelte2tsx": "^0.4.14"
   }
 }
