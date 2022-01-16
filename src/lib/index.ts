@@ -26,37 +26,38 @@ export const symbolMap = derived(Tess.result, ($res) => {
 
 export const chosenLanguage = writable(<Language>{ id: 'en', name: 'English (US)        ' });
 
-interface Word{
-    word: string,
-    symbols: Tesseract.Symbol[],
+interface Word {
+	word: string;
+	symbols: Tesseract.Symbol[];
 }
 
-const _foundWords : Writable<Word[]>  = writable([]);
-export const foundWords : Readable<Word[]> = {subscribe: _foundWords.subscribe};
+const _foundWords: Writable<Set<Word>> = writable();
+export const foundWords: Readable<Set<Word>> = { subscribe: _foundWords.subscribe };
 
 const _findWords = derived([symbolMap, chosenLanguage], ([$map, $lang]) => {
-	const api_url = (word) => `https://api.dictionaryapi.dev/api/v2/entries/${$lang}/${word}`;
+	_foundWords.set(new Set());
 
-    _foundWords.set([]);
-
-    //check rows
+	//check rows
 	$map.forEach((row, x) => {
 		row.forEach((symStart, y1) => {
 			row.slice(y1 + 1).forEach((symEnd, y2) => {
-				const currentSymbols = row.slice(y1, y2);
-				fetch(
-					api_url(currentSymbols.map((sym) => sym.text).reduce((acc, val) => acc + val, ''))
-				).then((res) => {
-					if (res.status != 200) return;
-                    res.json().then(j => {
-                        j.symbols = currentSymbols;
-                        _foundWords.update(words=>[...words,j as Word])
-                    })
-				});
+				_checkSymbols(row.slice(y1, y2),$lang.id);
 			});
 		});
 	});
 });
+
+const _checkSymbols = (currentSymbols: Tesseract.Symbol[], lang: string) => {
+	const wordstring = currentSymbols.map((sym) => sym.text).reduce((acc, val) => acc + val, '');
+	const api_url = `https://api.dictionaryapi.dev/api/v2/entries/${lang}/${wordstring}`;
+	fetch(api_url).then((res) => {
+		if (res.status != 200) return;
+		res.json().then((j) => {
+			j.symbols = currentSymbols;
+			_foundWords.update((words) => words.add(j as Word));
+		});
+	});
+};
 
 interface Language {
 	id: string;
