@@ -29,6 +29,6 @@
   },
   "type": "module",
   "dependencies": {
-    "svelte-tesseract": "^0.0.6"
+    "svelte-tesseract": "^0.0.8"
   }
 }
