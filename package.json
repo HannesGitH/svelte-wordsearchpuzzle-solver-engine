@@ -31,6 +31,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"svelte-tesseract": "^0.2.1"
+		"svelte-tesseract": "^0.2.3"
 	}
 }
