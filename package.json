@@ -1,6 +1,6 @@
 {
   "name": "svelte-wordsearchpuzzle-solver-engine",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
@@ -29,7 +29,7 @@
   },
   "type": "module",
   "dependencies": {
-    "svelte-tesseract": "^0.0.8",
+    "svelte-tesseract": "^0.2.1",
     "svelte2tsx": "^0.4.14"
   }
 }

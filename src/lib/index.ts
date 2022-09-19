@@ -17,7 +17,7 @@ export const progress = Tess.progress;
 export const symbolMap = derived(Tess.result, ($res) => {
 	//TODO: this needs to be more intelligent by creating a bound box etc
 	let shortestLength = Infinity;
-	let charList: Tesseract.Symbol[][];
+	let charList: Tesseract.Symbol[][] = [];
 	for (const paragraph of $res.data.paragraphs) {
 		const symbols = paragraph.symbols;
 		if (symbols.length < shortestLength) shortestLength = symbols.length;
